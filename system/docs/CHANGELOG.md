@@ -4,6 +4,10 @@ Contao Open Source CMS Changelog
 Version 3.1.3 (2013-09-24)
 --------------------------
 
+### Changed
+Drop the database query cache (see #6070). This renders `executeUncached()` and
+`executeCached()` deprecated. Use `execute()` instead.
+
 ### Fixed
 Do not redirect to protected pages after logout (see #6210).
 
