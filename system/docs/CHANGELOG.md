@@ -1,45 +1,19 @@
 Contao Open Source CMS Changelog
 ================================
 
-Version 3.1.3 (2013-09-24)
+Version 3.1.3 (2013-XX-XX)
 --------------------------
 
 ### Fixed
-Do not redirect to protected pages after logout (see #6210).
-
-### Fixed
-Consider the additional arguments in `Frontend::jumpToOrReload()` (see #5734).
-
-### Fixed
-Prevent article aliases from using reserved names (see #6066).
-
-### Fixed
-Correctly update the RSS feeds if a news item or event changes (see #6102).
-
-### Fixed
-Correctly link to news and calendar feeds via insert tag (see #6164).
-
-### Fixed
-Make the CSS ID available in the custom navigation module (see #6129).
-
-### Fixed
-Do not cache the "toggle_view" insert tag (see #6172).
-
-### Fixed
-Unset the primary key if a model is deleted (see #6162).
-
-### Fixed
-Support `tel:` and `sms:` upon IDNA conversion (see #6148).
-
-### Fixed
-Apply the width and height to the audio player as well (see #6114).
-
-### Fixed
-Do not exit after a template has been output (see #5570).
+Return an empty model collection instead of `null` (see #6147).
 
 ### Changed
 Drop the database query cache (see #6070). This renders `executeUncached()` and
 `executeCached()` deprecated. Use `execute()` instead.
+
+### Fixed
+Update the `Database_Result` object when updating a model (see #6070). This
+will invalidate the query cache and prevent data inconsistencies.
 
 ### Fixed
 Handle all possible errors when uploading files (see #5934).
