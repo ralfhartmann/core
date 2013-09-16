@@ -5,7 +5,7 @@ Version 3.1.3 (2013-XX-XX)
 --------------------------
 
 ### Fixed
-Return an empty model collection instead of `null` (see #6147).
+Do not exit after a template has been output (see #5570).
 
 ### Changed
 Drop the database query cache (see #6070). This renders `executeUncached()` and
