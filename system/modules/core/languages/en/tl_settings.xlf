@@ -176,6 +176,12 @@
       <trans-unit id="tl_settings.bypassCache.1">
         <source>Do not use the internal cache files (e.g. useful when developing extensions).</source>
       </trans-unit>
+      <trans-unit id="tl_settings.keepRunonce.0">
+        <source>Keep runonce.php files</source>
+      </trans-unit>
+      <trans-unit id="tl_settings.keepRunonce.1">
+        <source>Prevent the deletion of runonce.php files. Useful for debugging only.</source>
+      </trans-unit>
       <trans-unit id="tl_settings.disableRefererCheck.0">
         <source>Disable request tokens</source>
       </trans-unit>

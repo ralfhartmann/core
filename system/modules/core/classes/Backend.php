@@ -123,12 +123,19 @@ abstract class Backend extends \Controller
 				}
 				catch (\Exception $e) {}
 
-				if (!$this->Files->delete($strFile))
+				if (!$GLOBALS['TL_CONFIG']['keepRunonce'])
 				{
-					throw new \Exception("The $strFile file cannot be deleted. Please remove the file manually and correct the file permission settings on your server.");
-				}
+					if (!$this->Files->delete($strFile))
+					{
+						throw new \Exception("The $strFile file cannot be deleted. Please remove the file manually and correct the file permission settings on your server.");
+					}
 
-				$this->log("File $strFile ran once and has then been removed successfully", 'Backend handleRunOnce()', TL_GENERAL);
+					$this->log("File $strFile ran once and has then been removed successfully", 'Backend handleRunOnce()', TL_GENERAL);
+				}
+				else
+				{
+					$this->log("File $strFile ran and has been keeped due to a BE setting", 'Backend handleRunOnce()', TL_ERROR);
+				}
 			}
 		}
 	}
