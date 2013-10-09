@@ -31,3 +31,4 @@ system/logs/*
 system/tmp/*
 system/helper/ide_compat.php
 **/autoload.php
+/data
