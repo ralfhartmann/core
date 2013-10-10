@@ -28,3 +28,4 @@ system/config/pathconfig.php
 system/cron/cron.txt
 system/logs/*
 system/tmp/*
+assets/css/
