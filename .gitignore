@@ -10,6 +10,7 @@ Thumbs.db
 .build/
 .idea/
 nbproject/
+ide_compat.php
 
 # Contao
 /.htaccess
