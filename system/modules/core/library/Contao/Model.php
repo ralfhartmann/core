@@ -621,7 +621,7 @@ abstract class Model
 		}
 		else
 		{
-			return new \Model\Collection($objResult, static::$strTable);
+			return $objResult->numRows ? new \Model\Collection($objResult, static::$strTable) : null;
 		}
 	}
 
