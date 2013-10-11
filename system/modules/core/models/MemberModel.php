@@ -57,4 +57,82 @@ class MemberModel extends \Model
 
 		return static::findOneBy($arrColumns, array($strEmail, $strUsername), $arrOptions);
 	}
+
+	/**
+	 * Dont create a home directory
+	 */
+	const NO_HOMEDIR = '30'; /* bin2hex(0) */
+
+
+	/**
+	 * The password in arrData['password'] is not crypted
+	 */
+	const ENCRYPT_PASSWORD = 1;
+
+	/**
+	 * The password in arrData['password'] is crypted
+	 */
+	const DONT_ENCRYPT_PASSWORD = 0;
+
+
+	/**
+	 * Create a new user
+	 *
+	 * @param array   $arrData The data which are to use for creation
+	 * @param integer homedir ID or MemberModel::NO_HOMEDIR if no homedir desired
+	 * @param object  callee for the hooks
+	 *
+	 * @return \Contao\MemberModel|null if something goes wrong (not implemented)
+	 */
+	public static function createNewMember(&$arrData, $entcryptPassword = MemberModel::DONT_ENCRYPT_PASSWORD,  $reg_homeDir = MemberModel::NO_HOMEDIR, \Widged &$caller = null)
+	{
+		if (($entcryptPassword == self::ENCRYPT_PASSWORD) && $arrData['password'])
+		{
+			$arrData['password'] = \Encryption::hash($arrData['password']);
+		}
+
+		$objNewUser = new \MemberModel();
+		$objNewUser->setRow($arrData);
+		$objNewUser->save();
+
+		$insertId = $objNewUser->id;
+
+		// Assign home directory
+		if ($reg_homeDir != self::NO_HOMEDIR)
+		{
+			$objHomeDir = \FilesModel::findByUuid(hex2bin($reg_homeDir));
+
+			if ($objHomeDir !== null)
+			{
+				\System::importStatic('Files');
+				$strUserDir = $arrData['username'] ?: 'user_' . $insertId;
+
+				// Add the user ID if the directory exists
+				while (is_dir(TL_ROOT . '/' . $objHomeDir->path . '/' . $strUserDir))
+				{
+					$strUserDir .= '_' . $insertId;
+				}
+
+				new \Folder($objHomeDir->path . '/' . $strUserDir);
+				$objUserDir = \FilesModel::findByPath($objHomeDir->path . '/' . $strUserDir);
+
+				// Save the folder ID
+				$objNewUser->assignDir = 1;
+				$objNewUser->homeDir = $objUserDir->uuid;
+				$objNewUser->save();
+			}
+		}
+
+		// HOOK: send insert ID and user data
+		if (isset($GLOBALS['TL_HOOKS']['createNewUser']) && is_array($GLOBALS['TL_HOOKS']['createNewUser']))
+		{
+			foreach ($GLOBALS['TL_HOOKS']['createNewUser'] as $callback)
+			{
+				$objCallback = System::importStatic($callback[0]);
+				$objCallback->$callback[1]($insertId, $arrData, $caller);
+			}
+		}
+
+		return $objNewUser;
+	}
 }

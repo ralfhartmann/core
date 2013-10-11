@@ -429,53 +429,12 @@ class ModuleRegistration extends \Module
 		}
 
 		// Create the user
-		$objNewUser = new \MemberModel();
-		$objNewUser->setRow($arrData);
-		$objNewUser->save();
-
-		$insertId = $objNewUser->id;
-
-		// Assign home directory
-		if ($this->reg_assignDir)
-		{
-			$objHomeDir = \FilesModel::findByUuid($this->reg_homeDir);
-
-			if ($objHomeDir !== null)
-			{
-				$this->import('Files');
-				$strUserDir = $arrData['username'] ?: 'user_' . $insertId;
-
-				// Add the user ID if the directory exists
-				if (is_dir(TL_ROOT . '/' . $objHomeDir->path . '/' . $strUserDir))
-				{
-					$strUserDir .= '_' . $insertId;
-				}
-
-				// Create the user folder
-				new \Folder($objHomeDir->path . '/' . $strUserDir);
-				$objUserDir = \FilesModel::findByPath($objHomeDir->path . '/' . $strUserDir);
-
-				// Save the folder ID
-				$objNewUser->assignDir = 1;
-				$objNewUser->homeDir = $objUserDir->uuid;
-				$objNewUser->save();
-			}
-		}
-
-		// HOOK: send insert ID and user data
-		if (isset($GLOBALS['TL_HOOKS']['createNewUser']) && is_array($GLOBALS['TL_HOOKS']['createNewUser']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['createNewUser'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($insertId, $arrData, $this);
-			}
-		}
+		$objNewUser = \MemberModel::createNewMember($arrData, \MemberModel::DONT_ENCRYPT_PASSWORD, $this->reg_assignDir ? bin2hex($this->reg_homeDir) : \MemberModel::NO_HOMEDIR, $this);
 
 		// Inform admin if no activation link is sent
 		if (!$this->reg_activate)
 		{
-			$this->sendAdminNotification($insertId, $arrData);
+			$this->sendAdminNotification($objNewUser->id, $arrData);
 		}
 
 		// Check whether there is a jumpTo page
