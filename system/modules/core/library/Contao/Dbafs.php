@@ -287,6 +287,7 @@ class Dbafs
 	{
 		$objDatabase = \Database::getInstance();
 		$objFile = \FilesModel::findByPath($strSource);
+		$objDatabase = \Database::getInstance();
 
 		// Add the source entry
 		if ($objFile === null)
@@ -319,6 +320,7 @@ class Dbafs
 		$objNewFile->uuid   = $objDatabase->getUuid();
 		$objNewFile->path   = $strDestination;
 		$objNewFile->name   = basename($strDestination);
+		$objNewFile->uuid   = $objDatabase->getUuid();
 		$objNewFile->save();
 
 		// Update all child records
