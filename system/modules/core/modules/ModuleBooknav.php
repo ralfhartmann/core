@@ -88,7 +88,7 @@ class ModuleBooknav extends \Module
 		if (FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
-			$groups = $this->User->groups;
+			$groups = deserialize($this->User->groups, true);
 		}
 
 		// Get all book pages

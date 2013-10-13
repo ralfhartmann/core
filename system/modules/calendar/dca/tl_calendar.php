@@ -323,7 +323,7 @@ class tl_calendar extends Backend
 					if (is_array($arrNew['tl_calendar']) && in_array(Input::get('id'), $arrNew['tl_calendar']))
 					{
 						// Add permissions on user level
-						if ($this->User->inherit == 'custom' || !$this->User->groups[0])
+						if ($this->User->inherit == 'custom' || !deserialize($this->User->groups, true)[0])
 						{
 							$objUser = $this->Database->prepare("SELECT calendars, calendarp FROM tl_user WHERE id=?")
 													   ->limit(1)
@@ -342,11 +342,11 @@ class tl_calendar extends Backend
 						}
 
 						// Add permissions on group level
-						elseif ($this->User->groups[0] > 0)
+						elseif (deserialize($this->User->groups, true)[0] > 0)
 						{
 							$objGroup = $this->Database->prepare("SELECT calendars, calendarp FROM tl_user_group WHERE id=?")
 													   ->limit(1)
-													   ->execute($this->User->groups[0]);
+													   ->execute(deserialize($this->User->groups, true)[0]);
 
 							$arrCalendarp = deserialize($objGroup->calendarp);
 
@@ -356,7 +356,7 @@ class tl_calendar extends Backend
 								$arrCalendars[] = Input::get('id');
 
 								$this->Database->prepare("UPDATE tl_user_group SET calendars=? WHERE id=?")
-											   ->execute(serialize($arrCalendars), $this->User->groups[0]);
+											   ->execute(serialize($arrCalendars), deserialize($this->User->groups, true)[0]);
 							}
 						}
 

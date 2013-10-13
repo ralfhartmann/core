@@ -209,9 +209,9 @@ class Index extends Frontend
 		{
 			$arrGroups = $objPage->groups; // required for empty()
 
-			if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, $this->User->groups)))
+			if (!is_array($arrGroups) || empty($arrGroups) || !count(array_intersect($arrGroups, deserialize($this->User->groups, true))))
 			{
-				$this->log('Page "' . $pageId . '" can only be accessed by groups "' . implode(', ', (array) $objPage->groups) . '" (current user groups: ' . implode(', ', $this->User->groups) . ')', 'Index run()', TL_ERROR);
+				$this->log('Page "' . $pageId . '" can only be accessed by groups "' . implode(', ', (array) $objPage->groups) . '" (current user groups: ' . implode(', ', deserialize($this->User->groups, true)) . ')', 'Index run()', TL_ERROR);
 
 				$objHandler = new $GLOBALS['TL_PTY']['error_403']();
 				$objHandler->generate($pageId, $objRootPage);

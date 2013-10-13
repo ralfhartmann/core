@@ -82,7 +82,7 @@ abstract class Events extends \Module
 
 					$groups = deserialize($objCalendar->groups);
 
-					if (!is_array($groups) || empty($groups) || count(array_intersect($groups, $this->User->groups)) < 1)
+					if (!is_array($groups) || empty($groups) || count(array_intersect($groups, deserialize($this->User->groups, true))) < 1)
 					{
 						continue;
 					}

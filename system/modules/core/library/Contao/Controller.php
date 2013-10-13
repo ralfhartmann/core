@@ -320,7 +320,7 @@ abstract class Controller extends \System
 					$this->import('FrontendUser', 'User');
 					$groups = deserialize($objRow->groups);
 
-					if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
+					if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, deserialize($this->User->groups, true))))
 					{
 						return '';
 					}
@@ -412,7 +412,7 @@ abstract class Controller extends \System
 			$this->import('FrontendUser', 'User');
 			$groups = deserialize($objRow->groups);
 
-			if (!is_array($groups) || count($groups) < 1 || count(array_intersect($groups, $this->User->groups)) < 1)
+			if (!is_array($groups) || count($groups) < 1 || count(array_intersect($groups, deserialize($this->User->groups, true))) < 1)
 			{
 				return '';
 			}
@@ -514,7 +514,7 @@ abstract class Controller extends \System
 				$this->import('FrontendUser', 'User');
 				$groups = deserialize($objRow->groups);
 
-				if (!is_array($groups) || count($groups) < 1 || count(array_intersect($groups, $this->User->groups)) < 1)
+				if (!is_array($groups) || count($groups) < 1 || count(array_intersect($groups, deserialize($this->User->groups, true))) < 1)
 				{
 					return '';
 				}

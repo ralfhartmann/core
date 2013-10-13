@@ -64,7 +64,7 @@ abstract class ModuleNews extends \Module
 
 					$groups = deserialize($objArchive->groups);
 
-					if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, $this->User->groups)))
+					if (!is_array($groups) || empty($groups) || !count(array_intersect($groups, deserialize($this->User->groups, true))))
 					{
 						continue;
 					}

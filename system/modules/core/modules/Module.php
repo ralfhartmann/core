@@ -199,7 +199,7 @@ abstract class Module extends \Frontend
 		if (FE_USER_LOGGED_IN)
 		{
 			$this->import('FrontendUser', 'User');
-			$groups = $this->User->groups;
+			$groups = deserialize($this->User->groups, true);
 		}
 
 		// Layout template fallback
