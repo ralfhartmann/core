@@ -1,0 +1,21 @@
+[submodule "system/modules/FacebookConnect"]
+	path = system/modules/FacebookConnect
+	url = https://github.com/marksturm/ContaoFacebookConnect.git
+[submodule "system/modules/mailusername"]
+	path = system/modules/mailusername
+	url = ./system/modules/mailusername
+[submodule "system/modules/recaptcha"]
+	path = system/modules/recaptcha
+	url = ./system/modules/recaptcha/
+[submodule "system/modules/ce-access"]
+	path = system/modules/ce-access
+	url = ./system/modules/ce-access/
+[submodule "system/modules/zzz_berlinmusiker"]
+	path = system/modules/zzz_berlinmusiker
+	url = /home/ralf/work/git/berlinmusiker.de/
+[submodule "system/modules/metapalettes"]
+	path = system/modules/metapalettes
+	url = https://github.com/bit3/contao-meta-palettes.git
+[submodule "system/modules/ajax"]
+        path = system/modules/ajax
+        url = https://github.com/aschempp/contao-ajax.git
