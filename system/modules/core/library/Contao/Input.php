@@ -313,10 +313,11 @@ class Input
 		if ($varValue === null)
 		{
 			unset($_POST[$strKey]);
+			unset($_SESSION['FORM_DATA'][$strKey]);
 		}
 		else
 		{
-			$_POST[$strKey] = $varValue;
+			$_POST[$strKey] = $_SESSION['FORM_DATA'][$strKey] = $varValue;
 		}
 	}
 
