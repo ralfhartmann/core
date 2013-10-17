@@ -35,6 +35,10 @@ class ModuleRegistration extends \Module
 	protected $strTemplate = 'member_default';
 
 
+	public function __construct($objModule, $strColumn='main')
+	{
+		parent::__construct($objModule, $strColumn);
+	}
 	/**
 	 * Display a wildcard in the back end
 	 * @return string
@@ -174,7 +178,7 @@ class ModuleRegistration extends \Module
 			$arrData['eval']['tableless'] = $this->tableless;
 			$arrData['eval']['required'] = $arrData['eval']['mandatory'];
 
-			$objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, $arrData['default'], '', '', $this));
+			$objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, $arrData['default']?:null, '', '', $this));
 
 			$objWidget->storeValues = true;
 			$objWidget->rowClass = 'row_' . $i . (($i == 0) ? ' row_first' : '') . ((($i % 2) == 0) ? ' even' : ' odd');
