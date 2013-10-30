@@ -248,7 +248,11 @@ class Ftp extends \Files
 		$return = $this->copy($strOldName, $strNewName);
 
 		// Delete the old file
-		if (!@unlink(TL_ROOT . '/' . $strOldName))
+		if (strpos($strOldName, '/') !== 0)
+		{
+			$strOldName = TL_ROOT . '/' . $strOldName;
+		}
+		if (!@unlink($strOldName))
 		{
 			$this->delete($strOldName);
 		}
@@ -269,7 +273,13 @@ class Ftp extends \Files
 	{
 		$this->connect();
 		$this->validate($strSource, $strDestination);
-		$return = @ftp_put($this->resConnection, $GLOBALS['TL_CONFIG']['ftpPath'] . $strDestination, TL_ROOT . '/' . $strSource, FTP_BINARY);
+
+		if (strpos($strSource, '/') !== 0 )
+		{
+			$strSource = TL_ROOT . '/' . $strSource;
+		}
+
+		$return = @ftp_put($this->resConnection, $GLOBALS['TL_CONFIG']['ftpPath'] . $strDestination, $strSource, FTP_BINARY);
 
 		if (is_dir(TL_ROOT . '/' . $strDestination))
 		{
@@ -342,7 +352,29 @@ class Ftp extends \Files
 	{
 		$this->connect();
 		$this->validate($strSource, $strDestination);
+// 		list($strDestination) = $this->relativateToFtpRoot($strDestination);
 
 		return @ftp_put($this->resConnection, $GLOBALS['TL_CONFIG']['ftpPath'] . $strDestination, $strSource, FTP_BINARY);
+	}
+
+	public function relativateToFtpRoot()
+	{
+		$ret = array();
+		foreach (func_get_args() as $strPath)
+		{
+			$ftpPath = preg_quote($GLOBALS['TL_CONFIG']['ftpPath'], '/');
+			$strFtpRoot = preg_replace('/'.$ftpPath.'/', '', TL_ROOT.'/');
+			$ret[] = $strPath = preg_replace('/^' . preg_quote($strFtpRoot, '/') . '/', '', $strPath);
+
+			if ($strPath == '') // see #5795
+			{
+				throw new \Exception('No file or folder name given');
+			}
+			elseif (strpos($strPath, '../') !== false)
+			{
+				throw new \Exception('Invalid file or folder name ' . $strPath);
+			}
+		}
+		return $ret;
 	}
 }
